@@ -32,6 +32,9 @@ const Index = () => {
           columns={4}
         />
 
+        {/* CTA Banner - Time to Move */}
+        <CtaBanner />
+
         {/* Category Banners */}
         <CategoryBanner />
 
@@ -42,9 +45,6 @@ const Index = () => {
           columns={4}
           className="bg-secondary/30"
         />
-
-        {/* CTA Banner - Time to Move */}
-        <CtaBanner />
 
         {/* Newsletter */}
         <Newsletter />
