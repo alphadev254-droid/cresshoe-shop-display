@@ -44,12 +44,7 @@ export function Header() {
             <Link
               key={item.href}
               to={item.href}
-              className={cn(
-                "relative text-sm font-medium transition-colors hover:text-primary pb-1",
-                isActiveLink(item.href) 
-                  ? "text-primary" 
-                  : "text-muted-foreground"
-              )}
+              className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary pb-1"
             >
               {item.label}
               {isActiveLink(item.href) && (
