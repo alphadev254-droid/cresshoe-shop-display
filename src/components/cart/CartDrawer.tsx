@@ -118,22 +118,12 @@ export function CartDrawer() {
                   <span>{formatPrice(getTotal(), siteConfig.currency)}</span>
                 </div>
 
-                <div className="grid gap-2">
-                  <Button
-                    className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white"
-                    onClick={handleWhatsAppOrder}
-                  >
-                    <MessageCircle className="h-5 w-5 mr-2" />
-                    Order via WhatsApp
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => setShowCheckout(true)}
-                  >
-                    Checkout Form
-                  </Button>
-                </div>
+                <Button
+                  className="w-full"
+                  onClick={() => setShowCheckout(true)}
+                >
+                  Proceed to Checkout
+                </Button>
               </div>
             )}
           </>
