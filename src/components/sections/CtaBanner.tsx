@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { siteConfig } from "@/config/site";
 
 interface CtaBannerProps {
   title?: string;
   subtitle?: string;
   ctaText?: string;
-  ctaLink?: string;
   backgroundImage?: string;
 }
 
@@ -14,7 +20,6 @@ export function CtaBanner({
   title = "TIME TO MOVE",
   subtitle = "Step into style. Elevate your game with the latest drops.",
   ctaText = "SHOP COLLECTION",
-  ctaLink = "/shop",
   backgroundImage = "https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1974&auto=format&fit=crop",
 }: CtaBannerProps) {
   return (
@@ -36,16 +41,34 @@ export function CtaBanner({
         <p className="text-white/80 text-lg md:text-xl mb-8 max-w-xl mx-auto md:mx-0">
           {subtitle}
         </p>
-        <Button
-          asChild
-          size="lg"
-          className="bg-white text-black hover:bg-white/90 font-medium px-8 h-12 group"
-        >
-          <Link to={ctaLink}>
-            {ctaText}
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </Button>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="lg"
+              className="bg-white text-black hover:bg-white/90 font-medium px-8 h-12 group"
+            >
+              {ctaText}
+              <ChevronDown className="ml-2 h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="start" 
+            className="w-56 bg-background border border-border shadow-lg z-50"
+          >
+            {siteConfig.categories.map((category) => (
+              <DropdownMenuItem key={category.id} asChild>
+                <Link 
+                  to={category.href}
+                  className="flex items-center justify-between cursor-pointer"
+                >
+                  {category.label}
+                  <ArrowRight className="h-4 w-4 opacity-50" />
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </section>
   );
