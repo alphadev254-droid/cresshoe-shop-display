@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,13 @@ import { useCart } from "@/context/CartContext";
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { setIsOpen, getItemCount } = useCart();
+  const location = useLocation();
   const itemCount = getItemCount();
+
+  const isActiveLink = (href: string) => {
+    if (href === "/") return location.pathname === "/";
+    return location.pathname.startsWith(href);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -38,9 +44,17 @@ export function Header() {
             <Link
               key={item.href}
               to={item.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+              className={cn(
+                "relative text-sm font-medium transition-colors hover:text-primary pb-1",
+                isActiveLink(item.href) 
+                  ? "text-primary" 
+                  : "text-muted-foreground"
+              )}
             >
               {item.label}
+              {isActiveLink(item.href) && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+              )}
             </Link>
           ))}
         </nav>
@@ -80,7 +94,12 @@ export function Header() {
             <Link
               key={item.href}
               to={item.href}
-              className="block py-3 px-2 text-base font-medium text-foreground hover:bg-secondary rounded-md transition-colors"
+              className={cn(
+                "block py-3 px-2 text-base font-medium rounded-md transition-colors",
+                isActiveLink(item.href)
+                  ? "text-primary bg-primary/10 border-l-2 border-primary"
+                  : "text-foreground hover:bg-secondary"
+              )}
               onClick={() => setIsMenuOpen(false)}
             >
               {item.label}
