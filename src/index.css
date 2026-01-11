@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CRESSHOE Design System - Premium Sneaker Store */
+/* WHITELIGHT Design System - Premium Sneaker Store */
 
 @layer base {
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
   
   :root {
-    /* Core palette - Clean monochrome with warm accent */
+    /* Core palette - Clean white with green accent */
     --background: 0 0% 100%;
     --foreground: 0 0% 8%;
 
@@ -18,20 +18,20 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 8%;
 
-    /* Primary - Deep charcoal */
-    --primary: 0 0% 12%;
+    /* Primary - Forest green */
+    --primary: 142 70% 35%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Warm gray */
-    --secondary: 30 5% 96%;
+    /* Secondary - Light gray */
+    --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 12%;
 
     /* Muted - Soft gray */
-    --muted: 30 5% 94%;
+    --muted: 0 0% 94%;
     --muted-foreground: 0 0% 45%;
 
-    /* Accent - Warm terracotta */
-    --accent: 15 70% 50%;
+    /* Accent - Lighter green */
+    --accent: 142 60% 45%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive */
@@ -39,11 +39,11 @@
     --destructive-foreground: 0 0% 100%;
 
     /* Borders & inputs */
-    --border: 30 10% 90%;
-    --input: 30 10% 90%;
-    --ring: 0 0% 12%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 142 70% 35%;
 
-    --radius: 0.375rem;
+    --radius: 0.5rem;
 
     /* Custom design tokens */
     --font-heading: 'Space Grotesk', sans-serif;
@@ -53,7 +53,7 @@
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.03);
     --shadow-md: 0 4px 12px -2px hsl(0 0% 0% / 0.08);
     --shadow-lg: 0 12px 32px -4px hsl(0 0% 0% / 0.12);
-    --shadow-product: 0 8px 24px -8px hsl(0 0% 0% / 0.15);
+    --shadow-product: 0 8px 24px -8px hsl(142 70% 35% / 0.2);
     
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -81,8 +81,8 @@
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 0 0% 96%;
-    --primary-foreground: 0 0% 6%;
+    --primary: 142 60% 45%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 96%;
@@ -90,7 +90,7 @@
     --muted: 0 0% 14%;
     --muted-foreground: 0 0% 60%;
 
-    --accent: 15 70% 55%;
+    --accent: 142 50% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62% 50%;
@@ -98,7 +98,7 @@
 
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 0 0% 80%;
+    --ring: 142 60% 45%;
     
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -141,7 +141,7 @@
     );
   }
 
-  /* Product card hover effect */
+  /* Product card hover effect with green border */
   .product-card {
     @apply transition-all duration-300 ease-out;
   }
@@ -157,7 +157,7 @@
 
   /* Badge styles */
   .badge-new {
-    @apply bg-accent text-accent-foreground;
+    @apply bg-primary text-primary-foreground;
   }
 
   .badge-sale {

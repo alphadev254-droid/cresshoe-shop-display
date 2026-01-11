@@ -18,7 +18,7 @@ export interface Product {
   slug: string;
   name: string;
   brand: string;
-  category: "men" | "women" | "unisex" | "running";
+  category: "running" | "trail" | "gym" | "basketball";
   price: number;
   originalPrice?: number;
   images: ProductImage[];
@@ -49,4 +49,16 @@ export interface ProductFilters {
   isNew?: boolean;
   isBestSeller?: boolean;
   search?: string;
+}
+
+// Cart types
+export interface CartItem {
+  product: Product;
+  size: number;
+  quantity: number;
+}
+
+export interface Cart {
+  items: CartItem[];
+  total: number;
 }

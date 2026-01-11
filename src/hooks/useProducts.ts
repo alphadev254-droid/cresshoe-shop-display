@@ -6,7 +6,7 @@ import {
   getProductBySlug,
   getProductsByCategory,
 } from "@/lib/products";
-import type { ProductFilters, Product } from "@/types/product";
+import type { ProductFilters, ProductCategory } from "@/types/product";
 
 // Hook for fetching all products with filters
 export function useProducts(filters?: ProductFilters) {
@@ -42,9 +42,10 @@ export function useProduct(slug: string) {
 }
 
 // Hook for fetching products by category
-export function useProductsByCategory(category: Product["category"]) {
+export function useProductsByCategory(category: ProductCategory) {
   return useQuery({
     queryKey: ["products", "category", category],
     queryFn: () => getProductsByCategory(category),
+    enabled: !!category,
   });
 }
