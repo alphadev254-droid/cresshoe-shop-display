@@ -14,19 +14,24 @@ interface CategoryBannerProps {
 
 const defaultCategories: Category[] = [
   {
-    title: "Men",
-    href: "/men",
-    image: "https://images.unsplash.com/photo-1491553895911-0055uj8d0e8?w=600&q=80",
+    title: "Running Shoes",
+    href: "/category/running",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
   },
   {
-    title: "Women",
-    href: "/women",
-    image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=600&q=80",
+    title: "Trail Shoes",
+    href: "/category/trail",
+    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&q=80",
   },
   {
-    title: "Running",
-    href: "/running",
-    image: "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80",
+    title: "Gym Shoes",
+    href: "/category/gym",
+    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80",
+  },
+  {
+    title: "Basketball Shoes",
+    href: "/category/basketball",
+    image: "https://images.unsplash.com/photo-1579338559194-a162d19bf842?w=600&q=80",
   },
 ];
 
@@ -37,7 +42,7 @@ export function CategoryBanner({
   return (
     <section className={cn("py-12 md:py-16", className)}>
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {categories.map((category) => (
             <Link
               key={category.href}
