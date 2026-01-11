@@ -33,13 +33,17 @@ export default function ContactPage() {
       <Header />
       
       <main className="flex-1">
-        {/* Header */}
-        <section className="py-12 md:py-16 bg-secondary/30">
-          <div className="container">
-            <h1 className="font-heading text-3xl md:text-4xl font-bold mb-2">
+        {/* Header with Background Image */}
+        <section 
+          className="relative py-20 md:py-28 bg-cover bg-center"
+          style={{ backgroundImage: `url(https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80)` }}
+        >
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="container relative z-10">
+            <h1 className="font-heading text-3xl md:text-5xl font-bold mb-3 text-white">
               Contact Us
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-white/80 text-lg md:text-xl max-w-xl">
               We'd love to hear from you
             </p>
           </div>
