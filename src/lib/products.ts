@@ -1,5 +1,5 @@
 // Product data service - Currently uses JSON, easily replaceable with API calls
-import type { Product, ProductFilters, ProductsResponse } from "@/types/product";
+import type { Product, ProductFilters, ProductsResponse, ProductCategory } from "@/types/product";
 import productsData from "@/data/products.json";
 
 // Simulates API delay for realistic feel
@@ -70,12 +70,12 @@ export async function getNewArrivals(limit?: number): Promise<Product[]> {
 }
 
 // Get products by category
-export async function getProductsByCategory(category: Product["category"]): Promise<Product[]> {
+export async function getProductsByCategory(category: ProductCategory): Promise<Product[]> {
   const { products } = await getProducts({ category });
   return products;
 }
 
 // Format price with currency
 export function formatPrice(price: number, currency: string = "KSh"): string {
-  return `${currency}${price.toLocaleString()}`;
+  return `${currency} ${price.toLocaleString()}`;
 }

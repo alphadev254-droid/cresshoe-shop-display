@@ -2,27 +2,33 @@
 // This can be replaced with environment variables or API calls later
 
 export const siteConfig = {
-  name: "CRESSHOE",
+  name: "WHITELIGHT",
   tagline: "Step Into Style",
   description: "Premium footwear for every occasion",
   currency: "KSh",
   contact: {
-    email: "hello@cresshoe.com",
+    email: "hello@whitelight.com",
     phone: "+254 700 000 000",
     whatsapp: "+254700000000",
   },
   social: {
-    instagram: "https://instagram.com/cresshoe",
-    twitter: "https://twitter.com/cresshoe",
-    facebook: "https://facebook.com/cresshoe",
+    instagram: "https://instagram.com/whitelight",
+    twitter: "https://twitter.com/whitelight",
+    facebook: "https://facebook.com/whitelight",
   },
   navigation: [
     { label: "Home", href: "/" },
-    { label: "New Arrivals", href: "/new-arrivals" },
-    { label: "Men", href: "/men" },
-    { label: "Women", href: "/women" },
-    { label: "Running", href: "/running" },
+    { label: "Running", href: "/category/running" },
+    { label: "Trail", href: "/category/trail" },
+    { label: "Gym", href: "/category/gym" },
+    { label: "Basketball", href: "/category/basketball" },
     { label: "Contact", href: "/contact" },
+  ],
+  categories: [
+    { id: "running", label: "Running Shoes", href: "/category/running" },
+    { id: "trail", label: "Trail Shoes", href: "/category/trail" },
+    { id: "gym", label: "Gym Shoes", href: "/category/gym" },
+    { id: "basketball", label: "Basketball Shoes", href: "/category/basketball" },
   ],
 } as const;
 
