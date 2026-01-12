@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/config/site";
@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { apiService } from "@/services/apiService";
 
 interface CheckoutFormProps {
   onBack: () => void;
@@ -15,6 +16,7 @@ interface CheckoutFormProps {
 
 export function CheckoutForm({ onBack }: CheckoutFormProps) {
   const { items, getTotal, clearCart, setIsOpen } = useCart();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -23,30 +25,62 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
     notes: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    
+    console.log('Form data:', formData);
+    console.log('Cart items:', items);
+    
     if (!formData.name || !formData.phone) {
       toast.error("Please fill in name and phone number");
       return;
     }
 
-    // Build WhatsApp message
-    const orderDetails = items
-      .map(
-        (item) =>
-          `• ${item.product.name} (Size: ${item.size}) x${item.quantity} - ${formatPrice(item.product.price * item.quantity, siteConfig.currency)}`
-      )
-      .join("\n");
+    if (items.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
 
-    const message = `*New Order*\n\n*Customer Details:*\nName: ${formData.name}\nPhone: ${formData.phone}\n${formData.email ? `Email: ${formData.email}\n` : ""}${formData.address ? `Address: ${formData.address}\n` : ""}${formData.notes ? `Notes: ${formData.notes}\n` : ""}\n*Order Items:*\n${orderDetails}\n\n*Total: ${formatPrice(getTotal(), siteConfig.currency)}*`;
+    setIsSubmitting(true);
 
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodedMessage}`, "_blank");
-    
-    toast.success("Redirecting to WhatsApp...");
-    clearCart();
-    setIsOpen(false);
+    try {
+      // Clean phone number - remove all non-digits except leading +
+      const cleanPhone = formData.phone.replace(/[^\d+]/g, '').replace(/\+(\d)/g, '+$1');
+      
+      // Prepare order data for backend
+      const orderData = {
+        customerName: formData.name.trim(),
+        customerPhone: cleanPhone,
+        customerEmail: formData.email.trim() || undefined,
+        deliveryAddress: formData.address.trim() || undefined,
+        orderNotes: formData.notes.trim() || undefined,
+        items: items.map(item => ({
+          productId: item.product.id,
+          productName: item.product.name,
+          productPrice: item.product.price,
+          size: item.size,
+          quantity: item.quantity
+        }))
+      };
+
+      console.log('Sending order data:', orderData);
+      const response = await apiService.createOrder(orderData);
+      
+      if (response.success) {
+        toast.success("Order placed successfully!", {
+          description: `Order #${response.data.order.orderNumber} has been created.`
+        });
+        clearCart();
+        setIsOpen(false);
+      } else {
+        throw new Error(response.message || 'Failed to place order');
+      }
+    } catch (error) {
+      console.error('Order submission error:', error);
+      toast.error("Failed to place order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -78,7 +112,7 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
           <Input
             id="phone"
             type="tel"
-            placeholder="+254 7XX XXX XXX"
+            placeholder="254712345678 or +254712345678"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             required
@@ -117,23 +151,23 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
             rows={2}
           />
         </div>
-      </form>
 
-      <div className="border-t pt-4 mt-4 space-y-4">
-        <div className="flex justify-between text-lg font-semibold">
-          <span>Total</span>
-          <span>{formatPrice(getTotal(), siteConfig.currency)}</span>
+        <div className="border-t pt-4 mt-4 space-y-4">
+          <div className="flex justify-between text-lg font-semibold">
+            <span>Total</span>
+            <span>{formatPrice(getTotal(), siteConfig.currency)}</span>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isSubmitting}
+          >
+            <ShoppingBag className="h-5 w-5 mr-2" />
+            {isSubmitting ? "Placing Order..." : "Place Order"}
+          </Button>
         </div>
-
-        <Button
-          type="submit"
-          className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white"
-          onClick={handleSubmit}
-        >
-          <MessageCircle className="h-5 w-5 mr-2" />
-          Complete Order via WhatsApp
-        </Button>
-      </div>
+      </form>
     </div>
   );
 }

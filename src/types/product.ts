@@ -11,6 +11,7 @@ export interface ProductVariant {
   id: string;
   size: number;
   inStock: boolean;
+  stockQuantity?: number;
 }
 
 export interface Product {

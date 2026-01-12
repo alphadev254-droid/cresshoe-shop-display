@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Loader2, Save } from "lucide-react";
+import { ArrowLeft, Loader2, Save, Upload, X, Plus, Minus } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORIES: { value: ProductCategory; label: string }[] = [
@@ -32,6 +32,8 @@ const AdminProductForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -45,6 +47,8 @@ const AdminProductForm = () => {
     isNew: false,
     isBestSeller: false,
   });
+
+  const [variants, setVariants] = useState<Array<{size: number, inStock: boolean, stockQuantity: number}>>([]);
 
   useEffect(() => {
     if (isEditing) {
@@ -63,11 +67,53 @@ const AdminProductForm = () => {
             isNew: product.isNew || false,
             isBestSeller: product.isBestSeller || false,
           });
+          
+          // Load existing variants from database
+          if (product.variants && product.variants.length > 0) {
+            setVariants(product.variants.map(v => ({
+              size: v.size,
+              inStock: v.inStock,
+              stockQuantity: v.stockQuantity || 0
+            })));
+          }
         }
         setIsLoading(false);
       });
     }
   }, [id, isEditing]);
+
+  const addVariant = () => {
+    setVariants([...variants, { size: 40, inStock: true, stockQuantity: 10 }]);
+  };
+
+  const removeVariant = (index: number) => {
+    setVariants(variants.filter((_, i) => i !== index));
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 5) {
+      toast.error("Maximum 5 images allowed");
+      return;
+    }
+
+    setSelectedFiles(files);
+    
+    // Create preview URLs
+    const urls = files.map(file => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+  };
+
+  const removeFile = (index: number) => {
+    const newFiles = selectedFiles.filter((_, i) => i !== index);
+    const newUrls = previewUrls.filter((_, i) => i !== index);
+    
+    // Revoke the removed URL to prevent memory leaks
+    URL.revokeObjectURL(previewUrls[index]);
+    
+    setSelectedFiles(newFiles);
+    setPreviewUrls(newUrls);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,20 +127,19 @@ const AdminProductForm = () => {
       price: Number(formData.price),
       originalPrice: formData.originalPrice ? Number(formData.originalPrice) : undefined,
       description: formData.description,
-      images: [
+      images: formData.imageUrl ? [
         {
           id: "img-1",
-          url: formData.imageUrl || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+          url: formData.imageUrl,
           alt: formData.name,
         },
-      ],
-      variants: [
-        { id: "v-40", size: 40, inStock: true },
-        { id: "v-41", size: 41, inStock: true },
-        { id: "v-42", size: 42, inStock: true },
-        { id: "v-43", size: 43, inStock: true },
-        { id: "v-44", size: 44, inStock: true },
-      ],
+      ] : [],
+      variants: variants.map((v, index) => ({
+        id: `v-${v.size}`,
+        size: v.size,
+        inStock: v.inStock,
+        stockQuantity: v.stockQuantity
+      })),
       tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
       isNew: formData.isNew,
       isBestSeller: formData.isBestSeller,
@@ -102,14 +147,15 @@ const AdminProductForm = () => {
 
     try {
       if (isEditing) {
-        await productService.update(id, productData);
+        await productService.update(id, productData, selectedFiles);
         toast.success("Product updated successfully");
       } else {
-        await productService.create(productData);
+        await productService.create(productData, selectedFiles);
         toast.success("Product created successfully");
       }
       navigate("/admin/products");
-    } catch {
+    } catch (error) {
+      console.error('Save error:', error);
       toast.error("Failed to save product");
     }
 
@@ -253,9 +299,9 @@ const AdminProductForm = () => {
             <CardHeader>
               <CardTitle>Media</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="imageUrl">Image URL</Label>
+                <Label htmlFor="imageUrl">Image URL (Optional)</Label>
                 <Input
                   id="imageUrl"
                   value={formData.imageUrl}
@@ -263,11 +309,67 @@ const AdminProductForm = () => {
                   placeholder="https://images.unsplash.com/..."
                 />
               </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="imageFiles">Upload Images (Max 5)</Label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                  <input
+                    id="imageFiles"
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="imageFiles"
+                    className="cursor-pointer flex flex-col items-center gap-2"
+                  >
+                    <Upload className="h-8 w-8 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Click to upload images or drag and drop
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      PNG, JPG, JPEG up to 10MB each
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Image Previews */}
+              {previewUrls.length > 0 && (
+                <div className="space-y-2">
+                  <Label>Selected Images</Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {previewUrls.map((url, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={url}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 h-6 w-6"
+                          onClick={() => removeFile(index)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* URL Preview */}
               {formData.imageUrl && (
-                <div className="mt-4">
+                <div className="space-y-2">
+                  <Label>URL Preview</Label>
                   <img
                     src={formData.imageUrl}
-                    alt="Preview"
+                    alt="URL Preview"
                     className="w-32 h-32 object-cover rounded-lg"
                   />
                 </div>
@@ -279,42 +381,136 @@ const AdminProductForm = () => {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Status</CardTitle>
+              <CardTitle className="flex items-center justify-between text-sm">
+                Size & Stock Management
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addVariant}
+                  className="h-7 px-2 text-xs"
+                >
+                  <Plus className="h-3 w-3 mr-1" />
+                  Add
+                </Button>
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 p-3">
+              {variants.length === 0 ? (
+                <div className="text-center py-4 text-muted-foreground text-xs">
+                  <p>No sizes added yet. Click "Add" to start.</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {variants.map((variant, index) => (
+                    <div key={index} className="flex flex-col gap-2 p-2 border rounded text-xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1">
+                          <Label className="text-xs w-8">Size:</Label>
+                          <Input
+                            type="number"
+                            min="35"
+                            max="50"
+                            value={variant.size}
+                            onChange={(e) => {
+                              const newVariants = [...variants];
+                              newVariants[index].size = parseInt(e.target.value) || 40;
+                              setVariants(newVariants);
+                            }}
+                            className="w-12 h-6 text-xs"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeVariant(index)}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Label className="text-xs w-8">Stock:</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={variant.stockQuantity}
+                          onChange={(e) => {
+                            const newVariants = [...variants];
+                            newVariants[index].stockQuantity = parseInt(e.target.value) || 0;
+                            newVariants[index].inStock = newVariants[index].stockQuantity > 0;
+                            setVariants(newVariants);
+                          }}
+                          className="w-12 h-6 text-xs"
+                        />
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Switch
+                          checked={variant.inStock}
+                          onCheckedChange={(checked) => {
+                            const newVariants = [...variants];
+                            newVariants[index].inStock = checked;
+                            if (!checked) {
+                              newVariants[index].stockQuantity = 0;
+                            } else if (newVariants[index].stockQuantity === 0) {
+                              newVariants[index].stockQuantity = 10;
+                            }
+                            setVariants(newVariants);
+                          }}
+                          className="scale-75"
+                        />
+                        <Label className="text-xs">
+                          {variant.inStock ? 'Available' : 'Out of Stock'}
+                        </Label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="p-3">
+              <CardTitle className="text-sm">Status</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 p-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="isNew">Mark as New</Label>
+                <Label htmlFor="isNew" className="text-xs">Mark as New</Label>
                 <Switch
                   id="isNew"
                   checked={formData.isNew}
                   onCheckedChange={(checked) =>
                     setFormData({ ...formData, isNew: checked })
                   }
+                  className="scale-75"
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="isBestSeller">Best Seller</Label>
+                <Label htmlFor="isBestSeller" className="text-xs">Best Seller</Label>
                 <Switch
                   id="isBestSeller"
                   checked={formData.isBestSeller}
                   onCheckedChange={(checked) =>
                     setFormData({ ...formData, isBestSeller: checked })
                   }
+                  className="scale-75"
                 />
               </div>
             </CardContent>
           </Card>
 
-          <Button type="submit" className="w-full" disabled={isSaving}>
+          <Button type="submit" className="w-full h-8 text-xs" disabled={isSaving}>
             {isSaving ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
                 Saving...
               </>
             ) : (
               <>
-                <Save className="mr-2 h-4 w-4" />
-                {isEditing ? "Update Product" : "Create Product"}
+                <Save className="mr-1 h-3 w-3" />
+                {isEditing ? "Update" : "Create"}
               </>
             )}
           </Button>

@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-secondary/50">
       <div className="container py-12 md:py-16">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
@@ -45,55 +45,28 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Shop */}
+          {/* Categories */}
           <div>
-            <h3 className="font-heading font-semibold mb-4">Shop</h3>
+            <h3 className="font-heading font-semibold mb-4">Categories</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/new-arrivals" className="text-muted-foreground hover:text-foreground transition-colors">
-                  New Arrivals
-                </Link>
-              </li>
-              <li>
-                <Link to="/men" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Men
-                </Link>
-              </li>
-              <li>
-                <Link to="/women" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Women
-                </Link>
-              </li>
-              <li>
-                <Link to="/running" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Link to="/category/running" className="text-muted-foreground hover:text-foreground transition-colors">
                   Running
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h3 className="font-heading font-semibold mb-4">Support</h3>
-            <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Contact Us
+                <Link to="/category/trail" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Trail
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                  FAQ
+                <Link to="/category/gym" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Gym
                 </Link>
               </li>
               <li>
-                <Link to="/shipping" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Shipping Info
-                </Link>
-              </li>
-              <li>
-                <Link to="/returns" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Returns
+                <Link to="/category/basketball" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Basketball
                 </Link>
               </li>
             </ul>

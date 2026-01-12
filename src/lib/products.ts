@@ -1,64 +1,72 @@
-// Product data service - Currently uses JSON, easily replaceable with API calls
+// Product data service - Backend API integration
 import type { Product, ProductFilters, ProductsResponse, ProductCategory } from "@/types/product";
-import productsData from "@/data/products.json";
+import { apiService } from "@/services/apiService";
 
-// Simulates API delay for realistic feel
-const simulateDelay = (ms: number = 0) => 
-  new Promise(resolve => setTimeout(resolve, ms));
+// Transform backend response to frontend format
+const transformBackendResponse = (backendData: any): ProductsResponse => {
+  return {
+    products: backendData.products || [],
+    total: backendData.pagination?.total || backendData.products?.length || 0,
+    page: backendData.pagination?.page || 1,
+    limit: backendData.pagination?.limit || backendData.products?.length || 0,
+  };
+};
 
 // Get all products with optional filters
 export async function getProducts(filters?: ProductFilters): Promise<ProductsResponse> {
-  await simulateDelay();
-  
-  let products = productsData.products as Product[];
-  
-  if (filters) {
-    if (filters.category) {
-      products = products.filter(p => p.category === filters.category);
+  try {
+    const params: Record<string, string> = {};
+    
+    if (filters) {
+      if (filters.category) params.category = filters.category;
+      if (filters.brand) params.brand = filters.brand;
+      if (filters.isNew !== undefined) params.isNew = filters.isNew.toString();
+      if (filters.isBestSeller !== undefined) params.isBestSeller = filters.isBestSeller.toString();
+      if (filters.minPrice !== undefined) params.minPrice = filters.minPrice.toString();
+      if (filters.maxPrice !== undefined) params.maxPrice = filters.maxPrice.toString();
+      if (filters.search) params.search = filters.search;
     }
-    if (filters.brand) {
-      products = products.filter(p => p.brand.toLowerCase() === filters.brand?.toLowerCase());
+    
+    const response = await apiService.getProducts(params);
+    
+    if (response.success) {
+      return transformBackendResponse(response.data);
     }
-    if (filters.isNew !== undefined) {
-      products = products.filter(p => p.isNew === filters.isNew);
-    }
-    if (filters.isBestSeller !== undefined) {
-      products = products.filter(p => p.isBestSeller === filters.isBestSeller);
-    }
-    if (filters.minPrice !== undefined) {
-      products = products.filter(p => p.price >= filters.minPrice!);
-    }
-    if (filters.maxPrice !== undefined) {
-      products = products.filter(p => p.price <= filters.maxPrice!);
-    }
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
-      products = products.filter(p => 
-        p.name.toLowerCase().includes(search) ||
-        p.brand.toLowerCase().includes(search) ||
-        p.tags.some(t => t.toLowerCase().includes(search))
-      );
-    }
+    
+    throw new Error(response.message || 'Failed to fetch products');
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    // Return empty response on error
+    return {
+      products: [],
+      total: 0,
+      page: 1,
+      limit: 0,
+    };
   }
-  
-  return {
-    products,
-    total: products.length,
-    page: 1,
-    limit: products.length,
-  };
 }
 
 // Get single product by slug
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  await simulateDelay();
-  
-  const products = productsData.products as Product[];
-  return products.find(p => p.slug === slug) || null;
+  try {
+    const response = await apiService.getProduct(slug);
+    
+    if (response.success) {
+      return response.data;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
 }
 
 // Get best sellers
 export async function getBestSellers(limit?: number): Promise<Product[]> {
+  const params: Record<string, string> = { isBestSeller: 'true' };
+  if (limit) params.limit = limit.toString();
+  
   const { products } = await getProducts({ isBestSeller: true });
   return limit ? products.slice(0, limit) : products;
 }

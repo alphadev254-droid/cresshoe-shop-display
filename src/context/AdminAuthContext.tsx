@@ -1,9 +1,17 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { validateCredentials } from "@/config/adminCredentials";
+import { apiService } from "@/services/apiService";
+
+interface AdminUser {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+}
 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
+  user: AdminUser | null;
   login: (username: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
@@ -25,39 +33,54 @@ interface AdminAuthProviderProps {
 export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<AdminUser | null>(null);
 
   useEffect(() => {
     // Check for existing session
-    const session = localStorage.getItem("admin_session");
-    if (session) {
-      setIsAuthenticated(true);
+    const token = localStorage.getItem("admin_token");
+    const userData = localStorage.getItem("admin_user");
+    
+    if (token && userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+      } catch (error) {
+        // Invalid stored data, clear it
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("admin_user");
+      }
     }
     setIsLoading(false);
   }, []);
 
   const login = async (username: string, password: string) => {
     try {
-      const isValid = await validateCredentials(username, password);
+      const response = await apiService.login(username, password);
       
-      if (isValid) {
-        localStorage.setItem("admin_session", JSON.stringify({ username, timestamp: Date.now() }));
+      if (response.success) {
+        setUser(response.data.admin);
         setIsAuthenticated(true);
         return { success: true };
       } else {
-        return { success: false, error: "Invalid username or password" };
+        return { success: false, error: response.message || "Login failed" };
       }
     } catch (error) {
-      return { success: false, error: "Login failed. Please try again." };
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : "Login failed. Please try again." 
+      };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("admin_session");
+    apiService.logout();
+    setUser(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AdminAuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AdminAuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout }}>
       {children}
     </AdminAuthContext.Provider>
   );
