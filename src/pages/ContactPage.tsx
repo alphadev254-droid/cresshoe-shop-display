@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, Phone, Mail, MapPin } from "lucide-react";
+import { MessageCircle, Phone, Mail, MapPin, Send } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { siteConfig } from "@/config/site";
 import { toast } from "sonner";
+import { contactService } from "@/services/contactService";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -16,16 +17,28 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSending(true);
+
+    try {
+      // Save to admin messages
+      await contactService.create(formData);
+      
+      // Also open WhatsApp
+      const message = `*Contact Form Message*\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`;
+      const encodedMessage = encodeURIComponent(message);
+      window.open(`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodedMessage}`, "_blank");
+      
+      toast.success("Message sent successfully!");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error) {
+      toast.error("Failed to send message");
+    }
     
-    const message = `*Contact Form Message*\n\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\n\nMessage:\n${formData.message}`;
-    const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${siteConfig.contact.whatsapp}?text=${encodedMessage}`, "_blank");
-    
-    toast.success("Redirecting to WhatsApp...");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSending(false);
   };
 
   return (
@@ -160,9 +173,9 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full">
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Send via WhatsApp
+                  <Button type="submit" className="w-full" disabled={isSending}>
+                    <Send className="h-4 w-4 mr-2" />
+                    {isSending ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>
