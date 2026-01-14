@@ -9,7 +9,7 @@ export const siteConfig = {
   contact: {
     email: "hello@whitelight.com",
     phone: "+254 700 000 000",
-    whatsapp: "+254700000000",
+    whatsapp: "+254113765336",
   },
   social: {
     instagram: "https://instagram.com/whitelight",

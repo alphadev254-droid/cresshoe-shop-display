@@ -70,6 +70,38 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
         toast.success("Order placed successfully!", {
           description: `Order #${response.data.order.orderNumber} has been created.`
         });
+        
+        // Prepare WhatsApp message with order details
+        const orderNumber = response.data.order.orderNumber;
+        const total = getTotal();
+        
+        let message = `NEW ORDER #${orderNumber}\n\n`;
+        message += `CUSTOMER DETAILS:\n`;
+        message += `Name: ${formData.name}\n`;
+        message += `Phone: ${cleanPhone}\n`;
+        if (formData.email) message += `Email: ${formData.email}\n`;
+        if (formData.address) message += `Address: ${formData.address}\n`;
+        
+        message += `\nORDER ITEMS:\n`;
+        items.forEach((item, index) => {
+          message += `${index + 1}. ${item.product.name}\n`;
+          message += `   Size: ${item.size} | Qty: ${item.quantity} | ${formatPrice(item.product.price * item.quantity, siteConfig.currency)}\n`;
+        });
+        
+        message += `\nTOTAL: ${formatPrice(total, siteConfig.currency)}\n`;
+        
+        if (formData.notes) {
+          message += `\nNOTES: ${formData.notes}\n`;
+        }
+        
+        // Encode message for URL
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappNumber = siteConfig.contact.whatsapp.replace(/[^\d]/g, '');
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        
+        // Open WhatsApp in new window
+        window.open(whatsappUrl, '_blank');
+        
         clearCart();
         setIsOpen(false);
       } else {

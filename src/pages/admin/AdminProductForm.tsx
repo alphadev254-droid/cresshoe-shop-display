@@ -55,6 +55,9 @@ const AdminProductForm = () => {
       setIsLoading(true);
       productService.getById(id).then((product) => {
         if (product) {
+          console.log('📦 Product loaded in form:', JSON.stringify(product, null, 2));
+          console.log('🔢 Variants received:', product.variants);
+          
           setFormData({
             name: product.name,
             brand: product.brand,
@@ -70,11 +73,16 @@ const AdminProductForm = () => {
           
           // Load existing variants from database
           if (product.variants && product.variants.length > 0) {
-            setVariants(product.variants.map(v => ({
-              size: v.size,
-              inStock: v.inStock,
-              stockQuantity: v.stockQuantity || 0
-            })));
+            const mappedVariants = product.variants.map(v => {
+              console.log('🔄 Mapping variant:', v);
+              return {
+                size: v.size,
+                inStock: v.inStock,
+                stockQuantity: v.stockQuantity || 0
+              };
+            });
+            console.log('✅ Mapped variants:', mappedVariants);
+            setVariants(mappedVariants);
           }
         }
         setIsLoading(false);
@@ -417,7 +425,7 @@ const AdminProductForm = () => {
                               newVariants[index].size = parseInt(e.target.value) || 40;
                               setVariants(newVariants);
                             }}
-                            className="w-12 h-6 text-xs"
+                            className="w-16 h-6 text-xs px-2"
                           />
                         </div>
                         <Button
@@ -442,7 +450,7 @@ const AdminProductForm = () => {
                             newVariants[index].inStock = newVariants[index].stockQuantity > 0;
                             setVariants(newVariants);
                           }}
-                          className="w-12 h-6 text-xs"
+                          className="w-16 h-6 text-xs px-2"
                         />
                       </div>
                       <div className="flex items-center gap-1">
