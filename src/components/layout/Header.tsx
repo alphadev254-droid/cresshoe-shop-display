@@ -20,17 +20,6 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        {/* Mobile menu toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          <span className="sr-only">Toggle menu</span>
-        </Button>
-
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <span className="font-heading text-xl font-bold tracking-tight text-primary">
@@ -73,6 +62,17 @@ export function Header() {
               </span>
             )}
             <span className="sr-only">Cart</span>
+          </Button>
+          
+          {/* Mobile menu toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <span className="sr-only">Toggle menu</span>
           </Button>
         </div>
       </div>
