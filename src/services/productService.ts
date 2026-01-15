@@ -99,7 +99,7 @@ export const productService = {
   },
 
   // Update product
-  update: async (id: string, updates: Partial<Product>, images?: File[]): Promise<Product | null> => {
+  update: async (id: string, updates: Partial<Product>, images?: File[], imagesToDelete?: string[]): Promise<Product | null> => {
     try {
       const formData = new FormData();
       
@@ -113,6 +113,11 @@ export const productService = {
           }
         }
       });
+      
+      // Add images to delete
+      if (imagesToDelete && imagesToDelete.length > 0) {
+        formData.append('imagesToDelete', JSON.stringify(imagesToDelete));
+      }
       
       // Add new image files
       if (images && images.length > 0) {

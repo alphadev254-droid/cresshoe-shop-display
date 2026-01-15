@@ -34,6 +34,8 @@ const AdminProductForm = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [existingImages, setExistingImages] = useState<Array<{id: string, url: string}>>([]);
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -70,6 +72,9 @@ const AdminProductForm = () => {
             isNew: product.isNew || false,
             isBestSeller: product.isBestSeller || false,
           });
+          
+          // Load existing images
+          setExistingImages(product.images.map(img => ({ id: img.id, url: img.url })));
           
           // Load existing variants from database
           if (product.variants && product.variants.length > 0) {
@@ -110,6 +115,11 @@ const AdminProductForm = () => {
     // Create preview URLs
     const urls = files.map(file => URL.createObjectURL(file));
     setPreviewUrls(urls);
+  };
+
+  const removeExistingImage = (imageId: string) => {
+    setImagesToDelete([...imagesToDelete, imageId]);
+    setExistingImages(existingImages.filter(img => img.id !== imageId));
   };
 
   const removeFile = (index: number) => {
@@ -155,7 +165,7 @@ const AdminProductForm = () => {
 
     try {
       if (isEditing) {
-        await productService.update(id, productData, selectedFiles);
+        await productService.update(id, productData, selectedFiles, imagesToDelete);
         toast.success("Product updated successfully");
       } else {
         await productService.create(productData, selectedFiles);
@@ -343,6 +353,33 @@ const AdminProductForm = () => {
                   </label>
                 </div>
               </div>
+
+              {/* Existing Images (for edit mode) */}
+              {isEditing && existingImages.length > 0 && (
+                <div className="space-y-2">
+                  <Label>Current Images</Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    {existingImages.map((image) => (
+                      <div key={image.id} className="relative">
+                        <img
+                          src={image.url}
+                          alt="Product"
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 h-6 w-6"
+                          onClick={() => removeExistingImage(image.id)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Image Previews */}
               {previewUrls.length > 0 && (
