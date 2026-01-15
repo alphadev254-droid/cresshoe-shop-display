@@ -8,8 +8,8 @@ export const siteConfig = {
   currency: "KSh",
   contact: {
     email: "hello@whitelight.com",
-    phone: "+254 700 000 000",
-    whatsapp: "+254113765336",
+    phone: "+254 708 749473",
+    whatsapp: "+254708749473",
   },
   social: {
     instagram: "https://instagram.com/whitelight",
