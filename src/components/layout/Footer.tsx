@@ -9,7 +9,12 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="inline-block">
+            <Link to="/" className="inline-flex items-center gap-2">
+              <img 
+                src={siteConfig.logo} 
+                alt={siteConfig.name} 
+                className="h-14 w-14 object-cover rounded-full"
+              />
               <span className="font-heading text-xl font-bold">
                 {siteConfig.name}
               </span>

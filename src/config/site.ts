@@ -2,7 +2,8 @@
 // This can be replaced with environment variables or API calls later
 
 export const siteConfig = {
-  name: "WHITELIGHT",
+  name: "WHITELIGHT STORE",
+  logo: "/whitelight_logo.jpeg",
   tagline: "Step Into Style",
   description: "Premium footwear for every occasion",
   currency: "KSh",
