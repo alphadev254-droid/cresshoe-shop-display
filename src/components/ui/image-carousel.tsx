@@ -15,6 +15,7 @@ interface ImageCarouselProps {
   className?: string;
   showControls?: boolean;
   showDots?: boolean;
+  objectFit?: "cover" | "contain";
 }
 
 export function ImageCarousel({ 
@@ -23,7 +24,8 @@ export function ImageCarousel({
   interval = 5000,
   className,
   showControls = true,
-  showDots = true
+  showDots = true,
+  objectFit = "cover"
 }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -69,7 +71,10 @@ export function ImageCarousel({
             <img
               src={image.url}
               alt={image.alt_text}
-              className="w-full h-full object-cover"
+              className={cn(
+                "w-full h-full",
+                objectFit === "cover" ? "object-cover" : "object-cover"
+              )}
               loading={index === 0 ? "eager" : "lazy"}
             />
           </div>

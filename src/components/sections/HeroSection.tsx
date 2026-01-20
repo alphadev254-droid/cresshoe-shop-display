@@ -44,9 +44,10 @@ export function HeroSection({
           images={heroImages}
           className="w-full h-full"
           showControls={false}
-          showDots={false}
+          showDots={true}
           autoPlay={true}
           interval={6000}
+          objectFit="cover"
         />
         <div className="hero-overlay absolute inset-0" />
       </div>

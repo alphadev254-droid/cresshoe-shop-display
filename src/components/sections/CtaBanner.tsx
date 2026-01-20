@@ -52,6 +52,7 @@ export function CtaBanner({
           showDots={false}
           autoPlay={true}
           interval={7000}
+          objectFit="cover"
         />
       </div>
       
