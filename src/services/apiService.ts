@@ -19,6 +19,7 @@ interface LoginResponse {
 
 class ApiService {
   private token: string | null = null;
+  public baseURL = API_BASE_URL;
 
   constructor() {
     this.token = localStorage.getItem('admin_token');

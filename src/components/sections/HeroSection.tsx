@@ -1,30 +1,52 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { bannerService, BannerImage } from "@/services/bannerService";
 
 interface HeroSectionProps {
   title?: string;
   subtitle?: string;
   ctaText?: string;
   ctaLink?: string;
-  backgroundImage?: string;
 }
+
+// Fallback images if backend is not available
+const fallbackImages: BannerImage[] = [
+  {
+    url: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1920&q=80",
+    alt_text: "New Arrivals"
+  }
+];
 
 export function HeroSection({
   title = "NEW ARRIVALS",
   subtitle = "Shop our latest collection",
   ctaText = "SHOP NOW",
   ctaLink = "/new-arrivals",
-  backgroundImage = "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=1920&q=80",
 }: HeroSectionProps) {
+  const [heroImages, setHeroImages] = useState<BannerImage[]>(fallbackImages);
+
+  useEffect(() => {
+    bannerService.getHeroImages().then(images => {
+      if (images.length > 0) {
+        setHeroImages(images);
+      }
+    });
+  }, []);
+
   return (
     <section className="relative h-[70vh] md:h-[85vh] overflow-hidden">
-      {/* Background image */}
+      {/* Background carousel */}
       <div className="absolute inset-0">
-        <img
-          src={backgroundImage}
-          alt="Hero"
-          className="h-full w-full object-cover"
+        <ImageCarousel 
+          images={heroImages}
+          className="w-full h-full"
+          showControls={false}
+          showDots={false}
+          autoPlay={true}
+          interval={6000}
         />
         <div className="hero-overlay absolute inset-0" />
       </div>

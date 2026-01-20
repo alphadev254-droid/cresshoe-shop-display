@@ -65,6 +65,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
               </Badge>
             )}
           </div>
+          
+          {/* Offer Badge - Top Right */}
+          {product.isOnOffer && (
+            <div className="absolute top-2 right-2">
+              <Badge className="bg-orange-500 text-white text-xs px-2 py-0.5">
+                OFFER
+              </Badge>
+            </div>
+          )}
         </div>
       </Link>
 

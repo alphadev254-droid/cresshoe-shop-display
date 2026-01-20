@@ -48,6 +48,7 @@ const AdminProductForm = () => {
     tags: "",
     isNew: false,
     isBestSeller: false,
+    isOnOffer: false,
   });
 
   const [variants, setVariants] = useState<Array<{size: number, inStock: boolean, stockQuantity: number}>>([]);
@@ -71,6 +72,7 @@ const AdminProductForm = () => {
             tags: product.tags.join(", "),
             isNew: product.isNew || false,
             isBestSeller: product.isBestSeller || false,
+            isOnOffer: product.isOnOffer || false,
           });
           
           // Load existing images
@@ -161,6 +163,7 @@ const AdminProductForm = () => {
       tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
       isNew: formData.isNew,
       isBestSeller: formData.isBestSeller,
+      isOnOffer: formData.isOnOffer,
     };
 
     try {
@@ -539,6 +542,17 @@ const AdminProductForm = () => {
                   checked={formData.isBestSeller}
                   onCheckedChange={(checked) =>
                     setFormData({ ...formData, isBestSeller: checked })
+                  }
+                  className="scale-75"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="isOnOffer" className="text-xs">On Offer</Label>
+                <Switch
+                  id="isOnOffer"
+                  checked={formData.isOnOffer}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, isOnOffer: checked })
                   }
                   className="scale-75"
                 />

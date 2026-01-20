@@ -7,6 +7,13 @@ export const siteConfig = {
   tagline: "Step Into Style",
   description: "Premium footwear for every occasion",
   currency: "KSh",
+  promotions: {
+    freeSocks: {
+      enabled: true,
+      text: "🧦 FREE SOCKS with every purchase!",
+      description: "Get a complimentary pair of premium socks with any shoe purchase"
+    }
+  },
   contact: {
     email: "hello@whitelight.com",
     phone: "+254 708 749473",

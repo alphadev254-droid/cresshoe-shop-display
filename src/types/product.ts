@@ -28,6 +28,7 @@ export interface Product {
   tags: string[];
   isNew?: boolean;
   isBestSeller?: boolean;
+  isOnOffer?: boolean;
   createdAt: string;
 }
 

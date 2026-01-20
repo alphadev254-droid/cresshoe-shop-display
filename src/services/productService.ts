@@ -18,6 +18,7 @@ const transformProduct = (backendProduct: any): Product => {
     tags: backendProduct.tags || [],
     isNew: backendProduct.isNew || false,
     isBestSeller: backendProduct.isBestSeller || false,
+    isOnOffer: backendProduct.isOnOffer || false,
     createdAt: backendProduct.createdAt
   };
 };
@@ -37,6 +38,7 @@ const transformProductForBackend = (product: Omit<Product, "id" | "createdAt">) 
   formData.append('tags', JSON.stringify(product.tags));
   formData.append('isNew', product.isNew?.toString() || 'false');
   formData.append('isBestSeller', product.isBestSeller?.toString() || 'false');
+  formData.append('isOnOffer', product.isOnOffer?.toString() || 'false');
   formData.append('variants', JSON.stringify(product.variants));
   
   return formData;
