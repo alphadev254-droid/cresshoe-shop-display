@@ -20,10 +20,10 @@ interface CtaBannerProps {
 
 // Local CTA images
 const localCtaImages: BannerImage[] = [
-  { url: "/couresel_images/trail1.png", alt_text: "Trail Adventures" },
-  { url: "/couresel_images/trail2.png", alt_text: "Outdoor Performance" },
-  { url: "/couresel_images/trail3.png", alt_text: "Mountain Ready" },
-  { url: "/couresel_images/trail4.png", alt_text: "Trail Excellence" },
+  { url: "/couresel_images/running/running2.png", alt_text: "Running Performance" },
+  { url: "/couresel_images/gym/gym.png", alt_text: "Gym Excellence" },
+  { url: "/couresel_images/basketball/bk1.png", alt_text: "Basketball Power" },
+  { url: "/couresel_images/trail/trail1.png", alt_text: "Trail Adventures" },
 ];
 
 export function CtaBanner({

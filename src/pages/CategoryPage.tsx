@@ -23,32 +23,40 @@ const categoryDescriptions: Record<ProductCategory, string> = {
   orthopedic: "Medical-grade comfort and support for your feet",
 };
 
-// Pinterest-style high-quality images for each category
+// Category-specific images from local folders
 const categoryImages: Record<ProductCategory, string[]> = {
   running: [
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&q=80",
-    "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=1920&q=80",
-    "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=1920&q=80",
+    "/couresel_images/running/running2.png",
+    "/couresel_images/running/running3.jpg",
+    "/couresel_images/running/running4.jpg",
+    "/couresel_images/running/running5.jpg",
+    "/couresel_images/running/running6.jpg",
   ],
   trail: [
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?w=1920&q=80",
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
-    "https://images.unsplash.com/photo-1445307806294-bff7f67ff225?w=1920&q=80",
+    "/couresel_images/trail/trail1.png",
+    "/couresel_images/trail/trail2.png",
+    "/couresel_images/trail/trail3.png",
+    "/couresel_images/trail/trail4.png",
   ],
   gym: [
-    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80",
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&q=80",
-    "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=1920&q=80",
+    "/couresel_images/gym/gym.png",
+    "/couresel_images/gym/gym1.jpg",
+    "/couresel_images/gym/gym3.png",
+    "/couresel_images/gym/gym4.png",
+    "/couresel_images/gym/gym5.png",
+    "/couresel_images/gym/gym6.png",
   ],
   basketball: [
-    "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1920&q=80",
-    "https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?w=1920&q=80",
-    "https://images.unsplash.com/photo-1515523110800-9415d13b84a8?w=1920&q=80",
+    "/couresel_images/basketball/bk1.png",
+    "/couresel_images/basketball/bk2.png",
+    "/couresel_images/basketball/bk3.jpg",
+    "/couresel_images/basketball/bk5.jpg",
   ],
   orthopedic: [
-    "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1920&q=80",
-    "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1920&q=80",
-    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=1920&q=80",
+    "/couresel_images/orthopedic/orth1.jpg",
+    "/couresel_images/orthopedic/orth2.jpg",
+    "/couresel_images/orthopedic/orth3.jpg",
+    "/couresel_images/orthopedic/orth4.jpg",
   ],
 };
 

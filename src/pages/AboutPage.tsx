@@ -1,6 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Star, Users, Award, Zap } from "lucide-react";
+import { Star, Users, Award, Zap, Shield, Flame, Heart } from "lucide-react";
 
 const testimonials = [
   {
@@ -47,11 +47,24 @@ export default function AboutPage() {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 animate-pulse" />
+      <section className="relative py-24 overflow-hidden">
+        {/* Background carousel */}
+        <div className="absolute inset-0">
+          <div className="flex animate-scroll h-full">
+            <img src="/couresel_images/running/running2.png" alt="Running" className="h-full w-screen object-cover flex-shrink-0" />
+            <img src="/couresel_images/trail/trail1.png" alt="Trail" className="h-full w-screen object-cover flex-shrink-0" />
+            <img src="/couresel_images/gym/gym.png" alt="Gym" className="h-full w-screen object-cover flex-shrink-0" />
+            <img src="/couresel_images/basketball/bk1.png" alt="Basketball" className="h-full w-screen object-cover flex-shrink-0" />
+            <img src="/couresel_images/orthopedic/orth1.jpg" alt="Orthopedic" className="h-full w-screen object-cover flex-shrink-0" />
+          </div>
+        </div>
+        
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/60" />
+        
         <div className="container relative">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="font-heading text-6xl md:text-8xl font-black text-white mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+            <h1 className="font-heading text-6xl md:text-8xl font-black text-white mb-6">
               ABOUT WHITELIGHT
             </h1>
             <p className="font-body text-2xl text-gray-300 leading-relaxed">
@@ -66,28 +79,28 @@ export default function AboutPage() {
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
                 <Users className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-3xl font-bold text-black mb-2">50K+</h3>
               <p className="font-body text-lg text-gray-600">Happy Customers</p>
             </div>
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-full mb-4">
                 <Award className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-3xl font-bold text-black mb-2">5+</h3>
               <p className="font-body text-lg text-gray-600">Years Experience</p>
             </div>
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-500 to-red-600 rounded-full mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-red-600 rounded-full mb-4">
                 <Zap className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-3xl font-bold text-black mb-2">100+</h3>
               <p className="font-body text-lg text-gray-600">Shoe Models</p>
             </div>
             <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
                 <Star className="h-8 w-8 text-white" />
               </div>
               <h3 className="font-heading text-3xl font-bold text-black mb-2">4.9</h3>
@@ -100,23 +113,32 @@ export default function AboutPage() {
       {/* Story Section */}
       <section className="py-20 bg-gray-50">
         <div className="container">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="font-heading text-5xl font-bold text-black mb-8">
-              OUR STORY
-            </h2>
-            <div className="space-y-6 font-body text-xl text-gray-700 leading-relaxed">
-              <p>
-                Born from a passion for excellence, Whitelight emerged in the heart of Nairobi with a simple mission: 
-                to revolutionize the way people experience footwear.
-              </p>
-              <p>
-                We believe that every step should be a statement. Every stride should speak of quality, comfort, and style. 
-                That's why we've dedicated ourselves to sourcing and curating the finest athletic footwear from around the globe.
-              </p>
-              <p>
-                From the bustling streets of the CBD to the trails of the Ngong Hills, Whitelight shoes have become 
-                the trusted companion of athletes, professionals, and style enthusiasts across Kenya.
-              </p>
+          <h2 className="font-heading text-5xl font-bold text-black mb-12 text-center">
+            OUR STORY
+          </h2>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="max-h-[500px]">
+              <img 
+                src="/ourstoryimage.png" 
+                alt="Our Story" 
+                className="w-full h-full max-h-[500px] object-cover object-top rounded-lg shadow-lg"
+              />
+            </div>
+            <div className="flex flex-col justify-center">
+              <div className="space-y-6 font-body text-xl text-gray-700 leading-relaxed">
+                <p>
+                  Born from a passion for excellence, Whitelight emerged in the heart of Nairobi with a simple mission: 
+                  to revolutionize the way people experience footwear.
+                </p>
+                <p>
+                  We believe that every step should be a statement. Every stride should speak of quality, comfort, and style. 
+                  That's why we've dedicated ourselves to sourcing and curating the finest athletic footwear from around the globe.
+                </p>
+                <p>
+                  From the bustling streets of the CBD to the trails of the Ngong Hills, Whitelight shoes have become 
+                  the trusted companion of athletes, professionals, and style enthusiasts across Kenya.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -202,27 +224,27 @@ export default function AboutPage() {
             OUR VALUES
           </h2>
           <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Award className="h-10 w-10 text-white" />
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                <Shield className="h-10 w-10 text-white group-hover:animate-pulse" />
               </div>
               <h3 className="font-heading text-2xl font-bold text-black mb-4">QUALITY</h3>
               <p className="font-body text-lg text-gray-600">
                 We never compromise on quality. Every shoe is carefully selected and tested to meet our high standards.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap className="h-10 w-10 text-white" />
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                <Flame className="h-10 w-10 text-white group-hover:animate-bounce" />
               </div>
               <h3 className="font-heading text-2xl font-bold text-black mb-4">PERFORMANCE</h3>
               <p className="font-body text-lg text-gray-600">
                 Built for athletes, designed for performance. Our shoes enhance your natural abilities.
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gradient-to-r from-pink-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Users className="h-10 w-10 text-white" />
+            <div className="text-center group">
+              <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-xl">
+                <Heart className="h-10 w-10 text-white group-hover:animate-pulse" />
               </div>
               <h3 className="font-heading text-2xl font-bold text-black mb-4">COMMUNITY</h3>
               <p className="font-body text-lg text-gray-600">

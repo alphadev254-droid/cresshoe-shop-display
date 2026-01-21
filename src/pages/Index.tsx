@@ -20,12 +20,7 @@ const Index = () => {
       
       <main className="flex-1">
         {/* Hero */}
-        <HeroSection
-          title="NEW ARRIVALS"
-          subtitle="Shop our latest collection"
-          ctaText="SHOP NOW"
-          ctaLink="/new-arrivals"
-        />
+        <HeroSection />
 
         {/* Best Sellers */}
         <ProductGrid

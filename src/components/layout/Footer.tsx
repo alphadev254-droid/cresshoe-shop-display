@@ -68,51 +68,54 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Categories */}
-          <div>
-            <h3 className="font-heading font-bold mb-6 text-xl text-white">CATEGORIES</h3>
-            <ul className="space-y-3 font-body text-lg">
-              <li>
-                <Link to="/category/running" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
-                  Running
-                </Link>
-              </li>
-              <li>
-                <Link to="/category/trail" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
-                  Trail
-                </Link>
-              </li>
-              <li>
-                <Link to="/category/gym" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
-                  Gym
-                </Link>
-              </li>
-              <li>
-                <Link to="/category/basketball" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
-                  Basketball
-                </Link>
-              </li>
-              <li>
-                <Link to="/category/orthopedic" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
-                  Orthopedic
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Categories and Contact - Side by side on mobile */}
+          <div className="grid grid-cols-2 gap-8 md:contents">
+            {/* Categories */}
+            <div>
+              <h3 className="font-heading font-bold mb-6 text-xl text-white">CATEGORIES</h3>
+              <ul className="space-y-3 font-body text-lg">
+                <li>
+                  <Link to="/category/running" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                    Running
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/trail" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                    Trail
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/gym" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                    Gym
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/basketball" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                    Basketball
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/orthopedic" className="text-gray-300 hover:text-white transition-colors hover:translate-x-1 inline-block">
+                    Orthopedic
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="font-heading font-bold mb-6 text-xl text-white">CONTACT</h3>
-            <ul className="space-y-4 font-body text-lg">
-              <li className="flex items-center gap-3 text-gray-300">
-                <Mail className="h-5 w-5 text-blue-400" />
-                {siteConfig.contact.email}
-              </li>
-              <li className="flex items-center gap-3 text-gray-300">
-                <Phone className="h-5 w-5 text-green-400" />
-                {siteConfig.contact.phone}
-              </li>
-            </ul>
+            {/* Contact */}
+            <div>
+              <h3 className="font-heading font-bold mb-6 text-xl text-white">CONTACT</h3>
+              <ul className="space-y-4 font-body text-lg">
+                <li className="flex items-center gap-3 text-gray-300">
+                  <Mail className="h-5 w-5 text-blue-400" />
+                  {siteConfig.contact.email}
+                </li>
+                <li className="flex items-center gap-3 text-gray-300">
+                  <Phone className="h-5 w-5 text-green-400" />
+                  {siteConfig.contact.phone}
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Location */}
