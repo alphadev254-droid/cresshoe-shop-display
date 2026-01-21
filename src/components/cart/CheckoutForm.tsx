@@ -44,8 +44,20 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
     setIsSubmitting(true);
 
     try {
-      // Clean phone number - remove all non-digits except leading +
-      const cleanPhone = formData.phone.replace(/[^\d+]/g, '').replace(/\+(\d)/g, '+$1');
+      // Clean and format phone number for Kenya
+      let cleanPhone = formData.phone.replace(/[^\d+]/g, '');
+      
+      // Handle Kenyan phone numbers
+      if (cleanPhone.startsWith('0')) {
+        // Convert 0712345678 to +254712345678
+        cleanPhone = '+254' + cleanPhone.substring(1);
+      } else if (cleanPhone.startsWith('254')) {
+        // Convert 254712345678 to +254712345678
+        cleanPhone = '+' + cleanPhone;
+      } else if (!cleanPhone.startsWith('+')) {
+        // Add +254 if no country code
+        cleanPhone = '+254' + cleanPhone;
+      }
       
       // Prepare order data for backend
       const orderData = {
@@ -59,7 +71,10 @@ export function CheckoutForm({ onBack }: CheckoutFormProps) {
           productName: item.product.name,
           productPrice: item.product.price,
           size: item.size,
-          quantity: item.quantity
+          selectedSizes: item.selectedSizes,
+          quantity: item.quantity,
+          productImage: item.product.images?.[0]?.url,
+          referenceLink: item.referenceLink
         }))
       };
 

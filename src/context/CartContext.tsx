@@ -9,7 +9,7 @@ interface CartContextType {
     price: number;
     image: string;
     size: number;
-    size2?: number | null;
+    selectedSizes?: number[];
     referenceLink: string;
     quantity: number;
   }) => void;
@@ -48,13 +48,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     price: number;
     image: string;
     size: number;
-    size2?: number | null;
+    selectedSizes?: number[];
     referenceLink: string;
     quantity: number;
   }) => {
     setItems((currentItems) => {
       const existingIndex = currentItems.findIndex(
-        (cartItem) => cartItem.product.id === item.id && cartItem.size === item.size && cartItem.size2 === item.size2
+        (cartItem) => cartItem.product.id === item.id && cartItem.size === item.size && JSON.stringify(cartItem.selectedSizes) === JSON.stringify(item.selectedSizes)
       );
 
       if (existingIndex >= 0) {
@@ -71,7 +71,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           images: [{ url: item.image, alt: item.name }]
         } as Product,
         size: item.size,
-        size2: item.size2,
+        selectedSizes: item.selectedSizes,
         referenceLink: item.referenceLink,
         quantity: item.quantity
       }];

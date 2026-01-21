@@ -19,7 +19,7 @@ const ProductDetail = () => {
   const { data: relatedProducts = [] } = useBestSellers(4);
   
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
-  const [selectedSize2, setSelectedSize2] = useState<number | null>(null);
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { addItem } = useCart();
@@ -53,27 +53,49 @@ const ProductDetail = () => {
 
   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
 
+  const handleSizeToggle = (size: number) => {
+    setSelectedSizes(prev => {
+      if (prev.includes(size)) {
+        return prev.filter(s => s !== size);
+      } else {
+        return [...prev, size];
+      }
+    });
+    
+    // Keep first selected size as primary
+    if (!selectedSize && !selectedSizes.includes(size)) {
+      setSelectedSize(size);
+    } else if (selectedSize === size && selectedSizes.filter(s => s !== size).length > 0) {
+      setSelectedSize(selectedSizes.filter(s => s !== size)[0]);
+    } else if (selectedSize === size) {
+      setSelectedSize(null);
+    }
+  };
+
   const handleAddToCart = () => {
-    if (!selectedSize) {
+    if (!selectedSize && selectedSizes.length === 0) {
       toast.error("Please select at least one size");
       return;
     }
     
-    const referenceLink = `${window.location.origin}/product/${slug}?img=${selectedImageIndex}&size1=${selectedSize}${selectedSize2 ? `&size2=${selectedSize2}` : ''}`;
+    const allSizes = selectedSize ? [selectedSize, ...selectedSizes.filter(s => s !== selectedSize)] : selectedSizes;
+    const sizesParam = allSizes.map((s, i) => `size${i + 1}=${s}`).join('&');
+    const referenceLink = `${window.location.origin}/product/${slug}?img=${selectedImageIndex}&${sizesParam}`;
     
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.images[selectedImageIndex]?.url || product.images[0]?.url,
-      size: selectedSize,
-      size2: selectedSize2,
+      size: selectedSize || selectedSizes[0],
+      selectedSizes: allSizes,
       referenceLink,
       quantity
     });
     
+    const sizeText = allSizes.length > 1 ? `Sizes ${allSizes.join(', ')}` : `Size ${allSizes[0]}`;
     toast.success("Added to cart!", {
-      description: `${product.name} - Size ${selectedSize}${selectedSize2 ? ` & ${selectedSize2}` : ''}`,
+      description: `${product.name} - ${sizeText}`,
     });
   };
 
@@ -168,66 +190,34 @@ const ProductDetail = () => {
 
               {/* Size selectors */}
               <div className="mb-6">
-                <p className="text-sm font-medium mb-3">Select Size(s)</p>
-                
-                {/* First size */}
-                <div className="mb-4">
-                  <p className="text-xs text-muted-foreground mb-2">Primary Size *</p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((variant) => (
+                <p className="text-sm font-medium mb-3">Select Size(s) - Choose multiple for flexibility</p>
+                <div className="flex flex-wrap gap-2">
+                  {product.variants.map((variant) => {
+                    const isSelected = selectedSizes.includes(variant.size) || selectedSize === variant.size;
+                    return (
                       <button
-                        key={`size1-${variant.id}`}
+                        key={variant.id}
                         disabled={!variant.inStock}
-                        onClick={() => setSelectedSize(variant.size)}
+                        onClick={() => handleSizeToggle(variant.size)}
                         className={cn(
-                          "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-colors",
-                          selectedSize === variant.size
-                            ? "border-primary bg-primary text-primary-foreground"
+                          "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-all duration-200",
+                          isSelected
+                            ? "border-primary bg-primary text-primary-foreground shadow-md scale-105"
                             : variant.inStock
-                            ? "border-border hover:border-foreground"
+                            ? "border-border hover:border-primary hover:scale-105"
                             : "border-border text-muted-foreground opacity-50 cursor-not-allowed"
                         )}
                       >
                         {variant.size}
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-                
-                {/* Second size (optional) */}
-                <div>
-                  <p className="text-xs text-muted-foreground mb-2">Second Size (Optional)</p>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setSelectedSize2(null)}
-                      className={cn(
-                        "h-12 px-4 rounded-md border text-sm font-medium transition-colors",
-                        selectedSize2 === null
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border hover:border-foreground"
-                      )}
-                    >
-                      None
-                    </button>
-                    {product.variants.map((variant) => (
-                      <button
-                        key={`size2-${variant.id}`}
-                        disabled={!variant.inStock || variant.size === selectedSize}
-                        onClick={() => setSelectedSize2(variant.size)}
-                        className={cn(
-                          "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-colors",
-                          selectedSize2 === variant.size
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : variant.inStock && variant.size !== selectedSize
-                            ? "border-border hover:border-foreground"
-                            : "border-border text-muted-foreground opacity-50 cursor-not-allowed"
-                        )}
-                      >
-                        {variant.size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                {(selectedSizes.length > 0 || selectedSize) && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Selected: {selectedSize ? [selectedSize, ...selectedSizes.filter(s => s !== selectedSize)].join(', ') : selectedSizes.join(', ')}
+                  </p>
+                )}
               </div>
 
               {/* Quantity */}

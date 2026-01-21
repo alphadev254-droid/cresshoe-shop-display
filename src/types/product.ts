@@ -57,7 +57,7 @@ export interface ProductFilters {
 export interface CartItem {
   product: Product;
   size: number;
-  size2?: number | null;
+  selectedSizes?: number[];
   referenceLink?: string;
   quantity: number;
 }
