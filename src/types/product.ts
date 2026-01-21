@@ -19,7 +19,7 @@ export interface Product {
   slug: string;
   name: string;
   brand: string;
-  category: "running" | "trail" | "gym" | "basketball";
+  category: "running" | "trail" | "gym" | "basketball" | "orthopedic";
   price: number;
   originalPrice?: number;
   images: ProductImage[];
@@ -57,6 +57,8 @@ export interface ProductFilters {
 export interface CartItem {
   product: Product;
   size: number;
+  size2?: number | null;
+  referenceLink?: string;
   quantity: number;
 }
 

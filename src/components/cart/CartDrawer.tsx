@@ -22,9 +22,9 @@ export function CartDrawer() {
     const orderDetails = items
       .map(
         (item) =>
-          `• ${item.product.name} (Size: ${item.size}) x${item.quantity} - ${formatPrice(item.product.price * item.quantity, siteConfig.currency)}`
+          `• ${item.product.name} (Size: ${item.size}${item.size2 ? ` & ${item.size2}` : ''}) x${item.quantity} - ${formatPrice(item.product.price * item.quantity, siteConfig.currency)}${item.referenceLink ? `\nRef: ${item.referenceLink}` : ''}`
       )
-      .join("\n");
+      .join("\n\n");
 
     const message = `Hello! I'd like to order:\n\n${orderDetails}\n\nTotal: ${formatPrice(getTotal(), siteConfig.currency)}`;
     const encodedMessage = encodeURIComponent(message);
@@ -66,8 +66,13 @@ export function CartDrawer() {
                         {item.product.name}
                       </h4>
                       <p className="text-xs text-muted-foreground">
-                        Size: {item.size}
+                        Size: {item.size}{item.size2 ? ` & ${item.size2}` : ''}
                       </p>
+                      {item.referenceLink && (
+                        <p className="text-xs text-blue-600 truncate">
+                          Ref: {item.referenceLink}
+                        </p>
+                      )}
                       <p className="font-semibold text-primary mt-1">
                         {formatPrice(item.product.price, siteConfig.currency)}
                       </p>

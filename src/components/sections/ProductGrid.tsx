@@ -25,8 +25,8 @@ export function ProductGrid({
     <section className={cn("py-12 md:py-16", className)}>
       <div className="container">
         {title && (
-          <h2 className="font-heading text-2xl md:text-3xl font-semibold mb-8">
-            {title}
+          <h2 className="font-heading text-4xl md:text-5xl font-black mb-12 text-center bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent">
+            {title.toUpperCase()}
           </h2>
         )}
         

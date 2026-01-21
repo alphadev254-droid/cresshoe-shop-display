@@ -5,7 +5,7 @@
 /* WHITELIGHT Design System - Premium Sneaker Store */
 
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
   
   :root {
     /* Core palette - Clean white with green accent */
@@ -45,9 +45,15 @@
 
     --radius: 0.5rem;
 
-    /* Custom design tokens */
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    /* Custom design tokens - Sportish & Magical */
+    --font-heading: 'Orbitron', monospace;
+    --font-body: 'Rajdhani', sans-serif;
+    --font-accent: 'Exo 2', sans-serif;
+    
+    /* Magical gradients */
+    --gradient-magic: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-sport: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-glow: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.03);
@@ -125,6 +131,11 @@
     font-family: var(--font-body);
   }
 
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     @apply font-semibold tracking-tight;
@@ -180,6 +191,10 @@
     animation: slideUp var(--transition-slow) ease-out;
   }
 
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -193,6 +208,15 @@
     to { 
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
     }
   }
 }

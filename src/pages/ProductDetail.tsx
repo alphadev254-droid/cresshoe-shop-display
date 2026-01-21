@@ -9,6 +9,7 @@ import { useProduct, useBestSellers } from "@/hooks/useProducts";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/config/site";
 import { ProductGrid } from "@/components/sections/ProductGrid";
+import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +19,10 @@ const ProductDetail = () => {
   const { data: relatedProducts = [] } = useBestSellers(4);
   
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedSize2, setSelectedSize2] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const { addItem } = useCart();
 
   if (isLoading) {
     return (
@@ -51,11 +55,25 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      toast.error("Please select a size");
+      toast.error("Please select at least one size");
       return;
     }
+    
+    const referenceLink = `${window.location.origin}/product/${slug}?img=${selectedImageIndex}&size1=${selectedSize}${selectedSize2 ? `&size2=${selectedSize2}` : ''}`;
+    
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[selectedImageIndex]?.url || product.images[0]?.url,
+      size: selectedSize,
+      size2: selectedSize2,
+      referenceLink,
+      quantity
+    });
+    
     toast.success("Added to cart!", {
-      description: `${product.name} - Size ${selectedSize}`,
+      description: `${product.name} - Size ${selectedSize}${selectedSize2 ? ` & ${selectedSize2}` : ''}`,
     });
   };
 
@@ -75,15 +93,45 @@ const ProductDetail = () => {
           </Link>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Images */}
+            {/* Images with multiple angles */}
             <div className="space-y-4">
               <div className="aspect-square overflow-hidden rounded-lg bg-secondary">
                 <img
-                  src={product.images[0]?.url}
-                  alt={product.images[0]?.alt || product.name}
-                  className="h-full w-full object-cover"
+                  src={product.images[selectedImageIndex]?.url || product.images[0]?.url}
+                  alt={product.images[selectedImageIndex]?.alt || product.name}
+                  className="h-full w-full object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                  onClick={() => {
+                    // Cycle through images on tap
+                    setSelectedImageIndex((prev) => 
+                      prev === product.images.length - 1 ? 0 : prev + 1
+                    );
+                  }}
                 />
               </div>
+              
+              {/* Image thumbnails */}
+              {product.images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto">
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={cn(
+                        "flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all",
+                        selectedImageIndex === index
+                          ? "border-primary ring-2 ring-primary/20"
+                          : "border-border hover:border-primary/50"
+                      )}
+                    >
+                      <img
+                        src={image.url}
+                        alt={image.alt || `${product.name} angle ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Details */}
@@ -118,27 +166,67 @@ const ProductDetail = () => {
                 {product.description}
               </p>
 
-              {/* Size selector */}
+              {/* Size selectors */}
               <div className="mb-6">
-                <p className="text-sm font-medium mb-3">Select Size</p>
-                <div className="flex flex-wrap gap-2">
-                  {product.variants.map((variant) => (
+                <p className="text-sm font-medium mb-3">Select Size(s)</p>
+                
+                {/* First size */}
+                <div className="mb-4">
+                  <p className="text-xs text-muted-foreground mb-2">Primary Size *</p>
+                  <div className="flex flex-wrap gap-2">
+                    {product.variants.map((variant) => (
+                      <button
+                        key={`size1-${variant.id}`}
+                        disabled={!variant.inStock}
+                        onClick={() => setSelectedSize(variant.size)}
+                        className={cn(
+                          "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-colors",
+                          selectedSize === variant.size
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : variant.inStock
+                            ? "border-border hover:border-foreground"
+                            : "border-border text-muted-foreground opacity-50 cursor-not-allowed"
+                        )}
+                      >
+                        {variant.size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Second size (optional) */}
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">Second Size (Optional)</p>
+                  <div className="flex flex-wrap gap-2">
                     <button
-                      key={variant.id}
-                      disabled={!variant.inStock}
-                      onClick={() => setSelectedSize(variant.size)}
+                      onClick={() => setSelectedSize2(null)}
                       className={cn(
-                        "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-colors",
-                        selectedSize === variant.size
+                        "h-12 px-4 rounded-md border text-sm font-medium transition-colors",
+                        selectedSize2 === null
                           ? "border-primary bg-primary text-primary-foreground"
-                          : variant.inStock
-                          ? "border-border hover:border-foreground"
-                          : "border-border text-muted-foreground opacity-50 cursor-not-allowed"
+                          : "border-border hover:border-foreground"
                       )}
                     >
-                      {variant.size}
+                      None
                     </button>
-                  ))}
+                    {product.variants.map((variant) => (
+                      <button
+                        key={`size2-${variant.id}`}
+                        disabled={!variant.inStock || variant.size === selectedSize}
+                        onClick={() => setSelectedSize2(variant.size)}
+                        className={cn(
+                          "h-12 min-w-[3rem] px-4 rounded-md border text-sm font-medium transition-colors",
+                          selectedSize2 === variant.size
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : variant.inStock && variant.size !== selectedSize
+                            ? "border-border hover:border-foreground"
+                            : "border-border text-muted-foreground opacity-50 cursor-not-allowed"
+                        )}
+                      >
+                        {variant.size}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 

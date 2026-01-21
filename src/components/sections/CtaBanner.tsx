@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { bannerService, BannerImage } from "@/services/bannerService";
+import { useState } from "react";
+import type { BannerImage } from "@/services/bannerService";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,12 +18,12 @@ interface CtaBannerProps {
   ctaText?: string;
 }
 
-// Fallback images if backend is not available
-const fallbackImages: BannerImage[] = [
-  {
-    url: "https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1974&auto=format&fit=crop",
-    alt_text: "Time to Move"
-  }
+// Local CTA images
+const localCtaImages: BannerImage[] = [
+  { url: "/couresel_images/trail1.png", alt_text: "Trail Adventures" },
+  { url: "/couresel_images/trail2.png", alt_text: "Outdoor Performance" },
+  { url: "/couresel_images/trail3.png", alt_text: "Mountain Ready" },
+  { url: "/couresel_images/trail4.png", alt_text: "Trail Excellence" },
 ];
 
 export function CtaBanner({
@@ -31,15 +31,9 @@ export function CtaBanner({
   subtitle = "Step into style. Elevate your game with the latest drops.",
   ctaText = "SHOP COLLECTION",
 }: CtaBannerProps) {
-  const [ctaImages, setCtaImages] = useState<BannerImage[]>(fallbackImages);
+  const [ctaImages] = useState<BannerImage[]>(localCtaImages);
 
-  useEffect(() => {
-    bannerService.getCtaImages().then(images => {
-      if (images.length > 0) {
-        setCtaImages(images);
-      }
-    });
-  }, []);
+
 
   return (
     <section className="relative py-24 md:py-32 overflow-hidden">

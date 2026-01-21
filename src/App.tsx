@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import ProductDetail from "./pages/ProductDetail";
 import CategoryPage from "./pages/CategoryPage";
 import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutPage";
 import NewArrivalsPage from "./pages/NewArrivalsPage";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/product/:slug" element={<ProductDetail />} />
               <Route path="/category/:category" element={<CategoryPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/new-arrivals" element={<NewArrivalsPage />} />
               
               {/* Legacy routes redirect */}

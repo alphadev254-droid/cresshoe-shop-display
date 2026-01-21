@@ -18,51 +18,51 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
+      <div className="container flex h-20 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-3 group">
           <img 
             src={siteConfig.logo} 
             alt={siteConfig.name} 
-            className="h-14 w-14 object-cover rounded-full"
+            className="h-16 w-16 object-cover rounded-full ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all duration-300"
           />
-          <span className="font-heading text-xl font-bold tracking-tight text-primary">
+          <span className="font-heading text-2xl font-black tracking-tight bg-gradient-to-r from-black via-gray-800 to-black bg-clip-text text-transparent group-hover:from-blue-600 group-hover:via-purple-600 group-hover:to-pink-600 transition-all duration-300">
             {siteConfig.name}
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-8">
           {siteConfig.navigation.map((item) => (
             <Link
               key={item.href}
               to={item.href}
-              className="relative text-sm font-medium text-muted-foreground transition-colors hover:text-primary pb-1"
+              className="relative font-body text-lg font-semibold text-muted-foreground transition-all duration-300 hover:text-primary hover:scale-105 pb-1"
             >
               {item.label}
               {isActiveLink(item.href) && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full" />
               )}
             </Link>
           ))}
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="hidden sm:flex">
-            <Search className="h-5 w-5" />
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" className="hidden sm:flex hover:scale-110 transition-transform duration-300">
+            <Search className="h-6 w-6" />
             <span className="sr-only">Search</span>
           </Button>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative"
+            className="relative hover:scale-110 transition-transform duration-300"
             onClick={() => setIsOpen(true)}
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-6 w-6" />
             {itemCount > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+              <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-xs font-bold text-white animate-pulse">
                 {itemCount}
               </span>
             )}
@@ -73,10 +73,10 @@ export function Header() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden hover:scale-110 transition-transform duration-300"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             <span className="sr-only">Toggle menu</span>
           </Button>
         </div>
@@ -89,16 +89,16 @@ export function Header() {
           isMenuOpen ? "max-h-96 border-b" : "max-h-0"
         )}
       >
-        <nav className="container py-4 space-y-1">
+        <nav className="container py-6 space-y-2">
           {siteConfig.navigation.map((item) => (
             <Link
               key={item.href}
               to={item.href}
               className={cn(
-                "block py-3 px-2 text-base font-medium rounded-md transition-colors",
+                "block py-4 px-4 font-body text-lg font-semibold rounded-lg transition-all duration-300",
                 isActiveLink(item.href)
-                  ? "text-primary bg-primary/10 border-l-2 border-primary"
-                  : "text-foreground hover:bg-secondary"
+                  ? "text-white bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 border-l-4 border-white shadow-lg"
+                  : "text-foreground hover:bg-gradient-to-r hover:from-gray-100 hover:to-gray-200 hover:scale-105"
               )}
               onClick={() => setIsMenuOpen(false)}
             >

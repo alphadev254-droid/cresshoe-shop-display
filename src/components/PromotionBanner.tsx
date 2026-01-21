@@ -11,7 +11,7 @@ export function PromotionBanner() {
 
   return (
     <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
-      <div className="container flex items-center justify-between py-2 px-4">
+      <div className="container flex items-center justify-between py-3 px-4">
         <div className="flex-1 text-center">
           <p className="text-sm font-medium">
             {siteConfig.promotions.freeSocks.text}

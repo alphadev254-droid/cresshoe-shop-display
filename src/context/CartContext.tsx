@@ -3,6 +3,16 @@ import type { Product, CartItem } from "@/types/product";
 
 interface CartContextType {
   items: CartItem[];
+  addItem: (item: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    size: number;
+    size2?: number | null;
+    referenceLink: string;
+    quantity: number;
+  }) => void;
   addToCart: (product: Product, size: number, quantity?: number) => void;
   removeFromCart: (productId: string, size: number) => void;
   updateQuantity: (productId: string, size: number, quantity: number) => void;
@@ -31,6 +41,43 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
+
+  const addItem = (item: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    size: number;
+    size2?: number | null;
+    referenceLink: string;
+    quantity: number;
+  }) => {
+    setItems((currentItems) => {
+      const existingIndex = currentItems.findIndex(
+        (cartItem) => cartItem.product.id === item.id && cartItem.size === item.size && cartItem.size2 === item.size2
+      );
+
+      if (existingIndex >= 0) {
+        const updated = [...currentItems];
+        updated[existingIndex].quantity += item.quantity;
+        return updated;
+      }
+
+      return [...currentItems, {
+        product: {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          images: [{ url: item.image, alt: item.name }]
+        } as Product,
+        size: item.size,
+        size2: item.size2,
+        referenceLink: item.referenceLink,
+        quantity: item.quantity
+      }];
+    });
+    setIsOpen(true);
+  };
 
   const addToCart = (product: Product, size: number, quantity: number = 1) => {
     setItems((currentItems) => {
@@ -91,6 +138,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     <CartContext.Provider
       value={{
         items,
+        addItem,
         addToCart,
         removeFromCart,
         updateQuantity,

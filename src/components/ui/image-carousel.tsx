@@ -73,9 +73,10 @@ export function ImageCarousel({
               alt={image.alt_text}
               className={cn(
                 "w-full h-full",
-                objectFit === "cover" ? "object-cover" : "object-cover"
+                objectFit === "cover" ? "object-cover" : "object-contain"
               )}
               loading={index === 0 ? "eager" : "lazy"}
+              style={{ imageRendering: 'crisp-edges' }}
             />
           </div>
         ))}

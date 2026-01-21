@@ -18,11 +18,14 @@ export const siteConfig = {
     email: "hello@whitelight.com",
     phone: "+254 708 749473",
     whatsapp: "+254708749473",
+    address: "Luthuli Avenue, Rware Building Shop 410, Fourth Floor",
+    city: "Nairobi, Kenya"
   },
   social: {
     instagram: "https://instagram.com/whitelight",
-    twitter: "https://twitter.com/whitelight",
+    tiktok: "https://tiktok.com/@whitelight",
     facebook: "https://facebook.com/whitelight",
+    twitter: "https://twitter.com/whitelight",
   },
   navigation: [
     { label: "Home", href: "/" },
@@ -30,6 +33,8 @@ export const siteConfig = {
     { label: "Trail", href: "/category/trail" },
     { label: "Gym", href: "/category/gym" },
     { label: "Basketball", href: "/category/basketball" },
+    { label: "Orthopedic", href: "/category/orthopedic" },
+    { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
   ],
   categories: [
@@ -37,6 +42,7 @@ export const siteConfig = {
     { id: "trail", label: "Trail Shoes", href: "/category/trail" },
     { id: "gym", label: "Gym Shoes", href: "/category/gym" },
     { id: "basketball", label: "Basketball Shoes", href: "/category/basketball" },
+    { id: "orthopedic", label: "Orthopedic Shoes", href: "/category/orthopedic" },
   ],
 } as const;
 
