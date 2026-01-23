@@ -4,6 +4,7 @@ import { PromotionBanner } from "@/components/PromotionBanner";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ProductGrid } from "@/components/sections/ProductGrid";
 import { CategoryBanner } from "@/components/sections/CategoryBanner";
+import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 import { useBestSellers, useNewArrivals } from "@/hooks/useProducts";

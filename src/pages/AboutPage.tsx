@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Star, Users, Award, Zap, Shield, Flame, Heart } from "lucide-react";
 
 const testimonials = [
@@ -143,6 +144,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Why Choose Us */}
+      <WhyChooseUs imagePath="/ourstoryimage.png" />
 
       {/* Moving Testimonials */}
       <section className="py-20 bg-black overflow-hidden">

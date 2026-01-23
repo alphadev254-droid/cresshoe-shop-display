@@ -18,14 +18,15 @@ export const siteConfig = {
     email: "hello@whitelight.com",
     phone: "+254 708 749473",
     whatsapp: "+254708749473",
+    tillNumber: "8618626",
     address: "Luthuli Avenue, Rware Building Shop 410, Fourth Floor",
     city: "Nairobi, Kenya"
   },
   social: {
     instagram: "https://instagram.com/whitelight",
-    tiktok: "https://tiktok.com/@whitelight",
-    facebook: "https://facebook.com/whitelight",
-    twitter: "https://twitter.com/whitelight",
+    tiktok: "https://www.tiktok.com/@viatukenya",
+    facebook: "https://www.facebook.com/Whitelytcollect",
+    twitter: "https://x.com/viatuKe",
   },
   navigation: [
     { label: "Home", href: "/" },
