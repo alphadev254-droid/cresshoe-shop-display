@@ -23,7 +23,7 @@ export const siteConfig = {
     city: "Nairobi, Kenya"
   },
   social: {
-    instagram: "https://instagram.com/whitelight",
+    instagram: "https://www.instagram.com/whitelightstores_kenya",
     tiktok: "https://www.tiktok.com/@viatukenya",
     facebook: "https://www.facebook.com/Whitelytcollect",
     twitter: "https://x.com/viatuKe",
