@@ -120,7 +120,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="max-h-[500px]">
               <img 
-                src="/ourstoryimage.png" 
+                src="/ourstoryimage.jpeg" 
                 alt="Our Story" 
                 className="w-full h-full max-h-[500px] object-cover object-top rounded-lg shadow-lg"
               />
@@ -128,16 +128,13 @@ export default function AboutPage() {
             <div className="flex flex-col justify-center">
               <div className="space-y-6 font-body text-xl text-gray-700 leading-relaxed">
                 <p>
-                  Born from a passion for excellence, Whitelight emerged in the heart of Nairobi with a simple mission: 
-                  to revolutionize the way people experience footwear.
+                  Step into a world where every stride feels stronger. Our shoe store is built for movers, grinders, and go-getters—whether you're chasing a personal best on the track, powering through gym sessions, or conquering rugged trails.
                 </p>
                 <p>
-                  We believe that every step should be a statement. Every stride should speak of quality, comfort, and style. 
-                  That's why we've dedicated ourselves to sourcing and curating the finest athletic footwear from around the globe.
+                  From lightweight running shoes engineered for speed and comfort, to gym shoes that deliver stability and support, to trail shoes designed to grip, protect, and perform off-road, we've got the perfect fit for every journey.
                 </p>
                 <p>
-                  From the bustling streets of the CBD to the trails of the Ngong Hills, Whitelight shoes have become 
-                  the trusted companion of athletes, professionals, and style enthusiasts across Kenya.
+                  Premium brands, cutting-edge technology, and styles that move as boldly as you do—because your feet deserve gear that works as hard as you do. Lace up, level up, and run your world. 🏃♂️👟💪
                 </p>
               </div>
             </div>
@@ -146,7 +143,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <WhyChooseUs imagePath="/ourstoryimage.png" />
+      <WhyChooseUs imagePath="/whychooseus.png" />
 
       {/* Moving Testimonials */}
       <section className="py-20 bg-black overflow-hidden">

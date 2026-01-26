@@ -35,14 +35,14 @@ export function WhyChooseUs({ imagePath = "/placeholder-image.jpg" }: WhyChooseU
   return (
     <section className="py-12 md:py-16">
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* Content - Left Side */}
           <div className="space-y-6">
             <div className="space-y-3">
               <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                 Why Choose Us?
               </h2>
-              <p className="text-lg text-muted-foreground max-w-lg">
+              <p className="text-lg text-muted-foreground">
                 Experience the difference with WhiteLight Store - your trusted partner for premium footwear in Kenya.
               </p>
             </div>
@@ -70,11 +70,11 @@ export function WhyChooseUs({ imagePath = "/placeholder-image.jpg" }: WhyChooseU
 
           {/* Image - Right Side */}
           <div className="relative">
-            <div className="aspect-[4/3] overflow-hidden rounded-xl">
+            <div className="w-full aspect-[4/3] overflow-hidden rounded-xl">
               <img
                 src={imagePath}
                 alt="Why Choose WhiteLight Store"
-                className="w-full h-full object-contain bg-gray-50"
+                className="w-full h-full object-cover"
               />
             </div>
             {/* Decorative elements */}
