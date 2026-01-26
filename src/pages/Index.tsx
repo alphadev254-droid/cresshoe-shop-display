@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PromotionBanner } from "@/components/PromotionBanner";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { ProductGrid } from "@/components/sections/ProductGrid";
+import { VirtualProductGrid } from "@/components/sections/VirtualProductGrid";
 import { CategoryBanner } from "@/components/sections/CategoryBanner";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { Newsletter } from "@/components/sections/Newsletter";
@@ -24,10 +24,11 @@ const Index = () => {
         <HeroSection />
 
         {/* Best Sellers */}
-        <ProductGrid
+        <VirtualProductGrid
           title="Best Selling"
           products={bestSellers}
           columns={4}
+          itemsPerPage={8}
         />
 
         {/* CTA Banner - Time to Move */}
@@ -37,11 +38,12 @@ const Index = () => {
         <CategoryBanner />
 
         {/* New Arrivals */}
-        <ProductGrid
+        <VirtualProductGrid
           title="New In"
           products={newArrivals}
           columns={4}
           className="bg-secondary/30"
+          itemsPerPage={8}
         />
 
         {/* Newsletter */}

@@ -6,9 +6,11 @@ import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/config/site";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
+import { useLazyLoading } from "@/hooks/useLazyLoading";
 
 interface ProductCardProps {
   product: Product;
@@ -18,6 +20,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className }: ProductCardProps) {
   const { addToCart } = useCart();
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const { ref, isVisible } = useLazyLoading();
   
   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
   const discountPercent = hasDiscount
@@ -41,16 +44,20 @@ export function ProductCard({ product, className }: ProductCardProps) {
   };
 
   return (
-    <div className={cn("group block product-card", className)}>
+    <div ref={ref} className={cn("group block product-card", className)}>
       <Link to={`/product/${product.slug}`}>
         {/* Image container with green border */}
         <div className="relative aspect-square overflow-hidden rounded-lg border-2 border-primary bg-white mb-3">
-          <img
-            src={product.images[0]?.url}
-            alt={product.images[0]?.alt || product.name}
-            className="product-image h-full w-full object-cover transition-transform duration-500"
-            loading="lazy"
-          />
+          {isVisible ? (
+            <OptimizedImage
+              src={product.images[0]?.url || ''}
+              alt={product.images[0]?.alt || product.name}
+              className="h-full w-full transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-full w-full bg-gray-200 animate-pulse" />
+          )}
           
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
