@@ -50,14 +50,10 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-          <Button variant="ghost" size="icon" className="hidden sm:flex hover:scale-110 transition-transform duration-300">
-            <Search className="h-5 w-5 sm:h-6 sm:w-6" />
-            <span className="sr-only">Search</span>
-          </Button>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="relative hover:scale-110 transition-transform duration-300"
+            className="relative hover:scale-110 transition-transform duration-300 border-2 border-primary/20 rounded-full hover:border-primary/40 "
             onClick={() => setIsOpen(true)}
           >
             <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
