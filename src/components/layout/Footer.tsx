@@ -70,8 +70,83 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 2 - Quick Links */}
-          <div>
+          {/* Mobile: Quick Links and Services side by side */}
+          <div className="md:hidden grid grid-cols-2 gap-12 col-span-1">
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">
+                Quick Links
+              </h3>
+              <ul className="space-y-3">
+                <li>
+                  <Link to="/" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/products" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    All Collections
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/running" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    Officials
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/category/gym" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    Casuals
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="text-gray-300 hover:text-white transition-colors text-sm">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">
+                Services
+              </h3>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">Quality Original</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">Free Delivery</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">Custom Designs</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">Authentic Brands</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">5+ Years Trust</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span className="text-gray-300 text-xs">Best Sellers</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Desktop: Column 2 - Quick Links */}
+          <div className="hidden md:block">
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">
               Quick Links
             </h3>
@@ -109,8 +184,8 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Column 3 - Services */}
-          <div>
+          {/* Desktop: Column 3 - Services */}
+          <div className="hidden md:block">
             <h3 className="text-white font-bold text-lg mb-6 uppercase tracking-wide">
               Services
             </h3>
